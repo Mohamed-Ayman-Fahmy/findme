@@ -105,10 +105,10 @@ function requestLocationPermission() {
         }
     });
 }
-document.getElementById('submit-button').addEventListener('click', () => {
-    document.getElementById('submit-button').innerHTML = 'Your application is submitted.';
+// document.getElementById('submit-button').addEventListener('click', () => {
+//     document.getElementById('submit-button').innerHTML = 'Your application is submitted.';
 
-});
+// });
 
 document.getElementsByTagName('form')[0].addEventListener('submit', (event) => {
     event.preventDefault();
