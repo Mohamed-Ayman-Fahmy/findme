@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (granted) {
                     goToCurrentLocationOnGoogleMaps();
                 } else {
-                    alert('You do not have permission to access our website');
+                    document.getElementsByTagName('body').innerrHTML = 'You need to grant location permission to use this app.';
                 }
             });
         }
@@ -90,7 +90,8 @@ function requestLocationPermission() {
                 },
                 error => {
                     if (error.code === error.PERMISSION_DENIED) {
-                        console.log('Location access denied.');
+                        document.getElementsByTagName('body')[0].innerHTML = 'You need to grant permission to use this app.';
+
                         resolve(false);
                     } else {
                         console.error('Error occurred while accessing location:', error);
