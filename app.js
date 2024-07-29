@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (granted) {
                     goToCurrentLocationOnGoogleMaps();
                 } else {
-                    document.getElementsByTagName('body').innerrHTML = 'You need to grant location permission to use this app.';
+                    document.getElementsByTagName('body').innerHTML = 'You need to grant location permission to use this app.';
                 }
             });
         }
