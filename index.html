@@ -18,9 +18,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            overflow: auto;
+            overflow-x: hidden;
         }
 
         .container {
@@ -32,11 +32,12 @@
             border-radius: 10px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .form-section {
-            padding: 20px;
-            box-sizing: border-box;
+            margin-bottom: 20px;
         }
 
         .form-section:nth-child(1) {
@@ -53,13 +54,14 @@
         }
 
         .input-group {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             display: flex;
             flex-direction: column;
         }
 
         .input-group label {
             margin-bottom: 5px;
+            font-size: 16px;
         }
 
         .input-group input,
@@ -114,7 +116,7 @@
         }
 
         .language-switch {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
             padding: 10px 20px;
@@ -123,6 +125,7 @@
             color: white;
             border-radius: 5px;
             cursor: pointer;
+            z-index: 1000;
         }
 
         .arabic .form-section {
@@ -132,23 +135,50 @@
 
         @media (min-width: 768px) {
             .container {
+                display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
             }
 
             .form-section {
-                flex: 1;
-                max-width: 50%;
+                flex: 1 1 50%;
+                padding: 20px;
+                box-sizing: border-box;
             }
         }
 
         @media (max-width: 767px) {
             .container {
-                flex-direction: column;
+                display: block;
             }
 
             .form-section {
-                max-width: 100%;
+                margin-bottom: 0;
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .language-switch {
+                top: 10px;
+                right: 10px;
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+
+            .input-group label {
+                font-size: 12px;
+            }
+
+            .input-group input,
+            .input-group select {
+                font-size: 10px;
+                padding: 6px;
+            }
+
+            .submit-button {
+                padding: 10px;
+                font-size: 12px;
             }
         }
     </style>
@@ -156,80 +186,86 @@
 
 <body>
     <button class="language-switch" onclick="switchLanguage()">العربية</button>
-    <div class="container" id="form-container">
-        <div class="form-section">
-            <h2 id="general-info-title">Child Information</h2>
-            <div class="input-group">
-                <label for="title" id="title-label">Child's Name</label>
-                <input type="text" id="title" name="title" required>
-            </div>
-            <div class="input-group">
-                <label for="first-name" id="first-name-label">Child's Age</label>
-                <input type="text" id="first-name" name="first-name" required>
-            </div>
-            <div class="input-group">
-                <label for="last-name" id="last-name-label">Child's Height</label>
-                <input type="text" id="last-name" name="last-name" required>
-            </div>
-            <div class="input-group">
-                <label for="position" id="position-label">Child's Weight</label>
-                <input type="text" id="position" name="position" required>
-            </div>
-            <div class="input-group">
-                <label for="company" id="company-label">Child's Hair Color</label>
-                <input type="text" id="company" name="company" required>
-            </div>
-            <div class="input-group">
-                <label for="business-arena" id="business-arena-label">Other Skills of the Child (besides acting)</label>
-                <input type="text" id="business-arena" name="business-arena" required>
-            </div>
-            <div class="input-group">
-                <label for="employees" id="employees-label">Self-introduction Video Link</label>
-                <input type="text" id="employees" name="employees" required>
-            </div>
-        </div>
-        <div class="form-section">
-            <h2 id="contact-details-title">Contact Details</h2>
-            <div class="input-group">
-                <label for="street" id="street-label">City</label>
-                <input type="text" id="street" name="street" required>
-            </div>
-            <div class="input-group">
-                <label for="additional-info" id="additional-info-label">Available to Travel to Cairo?</label>
-                <input type="text" id="additional-info" name="additional-info">
-            </div>
-            <div class="input-group">
-                <label for="zip-code" id="zip-code-label">Mother's Phone Number</label>
-                <input type="text" id="zip-code" name="zip-code" required>
-            </div>
-            <div class="input-group">
-                <label for="place" id="place-label">Father's Phone Number</label>
-                <input type="text" id="place" name="place" required>
-            </div>
+    <form>
 
-            <div class="input-group">
-                <label for="country" id="country-label">Landline Number (if available)</label>
-                <input type="text" id="country" name="country" required>
+        <div class="container" id="form-container">
+            <div class="form-section">
+                <h2 id="general-info-title">Child Information</h2>
+                <div class="input-group">
+                    <label for="title" id="title-label">Child's Name</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div class="input-group">
+                    <label for="first-name" id="first-name-label">Child's Age</label>
+                    <input type="text" id="first-name" name="first-name" required>
+                </div>
+                <div class="input-group">
+                    <label for="last-name" id="last-name-label">Child's Height</label>
+                    <input type="text" id="last-name" name="last-name" required>
+                </div>
+                <div class="input-group">
+                    <label for="position" id="position-label">Child's Weight</label>
+                    <input type="text" id="position" name="position" required>
+                </div>
+                <div class="input-group">
+                    <label for="company" id="company-label">Child's Hair Color</label>
+                    <input type="text" id="company" name="company" required>
+                </div>
+                <div class="input-group">
+                    <label for="business-arena" id="business-arena-label">Other Skills of the Child (besides
+                        acting)</label>
+                    <input type="text" id="business-arena" name="business-arena" required>
+                </div>
+                <div class="input-group">
+                    <label for="employees" id="employees-label">Self-introduction Video Link</label>
+                    <input type="text" id="employees" name="employees" required>
+                </div>
             </div>
-            <div class="input-group">
-                <label for="phone-code" id="phone-code-label">Relative's Phone Number if Parents Unavailable</label>
-                <input type="text" id="phone-code" name="phone-code" required>
+            <div class="form-section">
+                <h2 id="contact-details-title">Contact Details</h2>
+                <div class="input-group">
+                    <label for="street" id="street-label">City</label>
+                    <input type="text" id="street" name="street" required>
+                </div>
+                <div class="input-group">
+                    <label for="additional-info" id="additional-info-label">Available to Travel to Cairo?</label>
+                    <input type="text" id="additional-info" name="additional-info">
+                </div>
+                <div class="input-group">
+                    <label for="zip-code" id="zip-code-label">Mother's Phone Number</label>
+                    <input type="text" id="zip-code" name="zip-code" required>
+                </div>
+                <div class="input-group">
+                    <label for="place" id="place-label">Father's Phone Number</label>
+                    <input type="text" id="place" name="place" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="country" id="country-label">Landline Number (if available)</label>
+                    <input type="text" id="country" name="country" required>
+                </div>
+                <div class="input-group">
+                    <label for="phone-code" id="phone-code-label">Relative's Phone Number if Parents Unavailable</label>
+                    <input type="text" id="phone-code" name="phone-code" required>
+                </div>
+                <div class="input-group">
+                    <label for="phone-number" id="phone-number-label">Mother's Email</label>
+                    <input type="text" id="phone-number" name="phone-number" required>
+                </div>
+                <div class="input-group">
+                    <label for="email" id="email-label">Father's Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms" id="terms-label">I do accept the <a>Terms and Conditions</a> of your
+                        site.</label>
+                </div>
+                <button type="submit" class="submit-button" id="submit-button">Register</button>
             </div>
-            <div class="input-group">
-                <label for="phone-number" id="phone-number-label">Mother's Email</label>
-                <input type="text" id="phone-number" name="phone-number" required>
-            </div>
-            <div class="input-group">
-                <label for="email" id="email-label">Father's Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="checkbox-group">
-                <input type="checkbox" id="terms" name="terms" required>
-                <label for="terms" id="terms-label">I do accept the <a>Terms and Conditions</a> of your site.</label>
-            </div>
-            <button type="submit" class="submit-button" id="submit-button">Register</button>
         </div>
-    </div>
+    </form>
+
     <script>
         // Your Firebase configuration
         const firebaseConfig = {
@@ -268,7 +304,7 @@
                 'phone-number-label': { en: 'Mother\'s Email', ar: 'بريد الام الالكتروني' },
                 'email-label': { en: 'Father\'s Email', ar: 'بريد الاب الالكتروني' },
                 'submit-button': { en: 'Register', ar: 'تسجيل' },
-                'terms-label': { en: 'I do accept the <a >Terms and Conditions</a> of your site.', ar: 'أوافق على <a >الشروط والأحكام</a> الخاصة بموقعك.' },
+                'terms-label': { en: 'I do accept the <a>Terms and Conditions</a> of your site.', ar: 'أوافق على <a>الشروط والأحكام</a> الخاصة بموقعك.' },
             };
 
             Object.keys(elements).forEach(id => {
