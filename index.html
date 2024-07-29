@@ -311,7 +311,7 @@
                 document.getElementById(id).innerHTML = !isEnglish ? elements[id].ar : elements[id].en;
             });
 
-            document.querySelector('.language-switch').innerText = isEnglish ? 'English' : 'العربية';
+            document.querySelector('.language-switch').innerText = !isEnglish ? 'English' : 'العربية';
         }
     </script>
 </body>
