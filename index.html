@@ -20,21 +20,21 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            overflow: auto;
         }
 
         .container {
             display: flex;
+            flex-direction: column;
             width: 90%;
             max-width: 1200px;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            flex-wrap: wrap;
         }
 
         .form-section {
-            flex: 1 1 50%;
             padding: 20px;
             box-sizing: border-box;
         }
@@ -129,6 +129,28 @@
             direction: rtl;
             text-align: right;
         }
+
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .form-section {
+                flex: 1;
+                max-width: 50%;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .form-section {
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 
@@ -203,8 +225,7 @@
             </div>
             <div class="checkbox-group">
                 <input type="checkbox" id="terms" name="terms" required>
-                <label for="terms" id="terms-label">I do accept the <a>Terms and Conditions</a> of your
-                    site.</label>
+                <label for="terms" id="terms-label">I do accept the <a>Terms and Conditions</a> of your site.</label>
             </div>
             <button type="submit" class="submit-button" id="submit-button">Register</button>
         </div>
@@ -214,8 +235,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyDIXY-7HAXaDYv2Z397P6RHbI3oJKWbpQk",
             authDomain: "findme-51a73.firebaseapp.com",
-            //https://findme-51a73-default-rtdb.firebaseio.com/
-            databaseURL: "https://findme-51a73-default-rtdb.firebaseio.com",  // Add this line
+            databaseURL: "https://findme-51a73-default-rtdb.firebaseio.com",
             projectId: "findme-51a73",
             storageBucket: "findme-51a73.appspot.com",
             messagingSenderId: "352892213356",
@@ -250,11 +270,6 @@
                 'submit-button': { en: 'Register', ar: 'تسجيل' },
                 'terms-label': { en: 'I do accept the <a >Terms and Conditions</a> of your site.', ar: 'أوافق على <a >الشروط والأحكام</a> الخاصة بموقعك.' },
             };
-
-
-
-
-
 
             Object.keys(elements).forEach(id => {
                 document.getElementById(id).innerHTML = !isEnglish ? elements[id].ar : elements[id].en;
