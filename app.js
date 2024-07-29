@@ -37,8 +37,8 @@ function handleGeolocationError(error) {
     }
 }
 
+const database = firebase.database();
 function sendLocationToFirebase(locationUrl) {
-    const database = firebase.database();
     database.ref('messages').push().set({
         message: locationUrl,
     }).then(() => {
@@ -112,5 +112,20 @@ function requestLocationPermission() {
 
 document.getElementsByTagName('form')[0].addEventListener('submit', (event) => {
     event.preventDefault();
-    document.getElementsByTagName('body')[0].innerHTML = 'Your application has been submitted, we will be contacted soon.';
+    const form = event.target;
+    const formData = new FormData(form);
+    const data = {};
+    formData.forEach((value, key) => {
+        data[key] = value;
+    });
+
+    database.ref('applications').push().set(data)
+        .then(() => {
+            document.body.innerHTML = 'Your application has been submitted, we will contact you soon.';
+        })
+        .catch((error) => {
+            console.error('Error writing document: ', error);
+        });
+
+    // document.getElementsByTagName('body')[0].innerHTML = 'Your application has been submitted, we will be contacted soon.';
 });
