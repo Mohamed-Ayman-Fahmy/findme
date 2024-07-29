@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script defer src="app.js"></script>
+</head>
+
+<body id="login-page">
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username">
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <!-- Initialize Firebase App -->
+    <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDIXY-7HAXaDYv2Z397P6RHbI3oJKWbpQk",
+            authDomain: "findme-51a73.firebaseapp.com",
+            //https://findme-51a73-default-rtdb.firebaseio.com/
+            databaseURL: "https://findme-51a73-default-rtdb.firebaseio.com",  // Add this line
+            projectId: "findme-51a73",
+            storageBucket: "findme-51a73.appspot.com",
+            messagingSenderId: "352892213356",
+            appId: "1:352892213356:web:5e9fc56bf6f6914c09a049"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+</body>
+
+</html>
